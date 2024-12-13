@@ -40,65 +40,44 @@
 
     </div>
 
+    <div class="minha-conta">
+        
+        <div class="container">
+            <div class="linha">
 
-    <div class="corpo-categorias">
+                <div class="col-2">
+                    <img src="../img/banner-1.png">
+                </div>
 
-        <div class="linha linha2">
-            <h2>Todos</h2>
-            <select name="" id="">
-                <option value="">Mais comprados</option>
-                <option value="">Mais Classificados</option>
-                <option value="">Menor Preco</option>
-                <option value="">Maior Preco</option>
-            </select>
+                <div class="col-2">
+
+                    <div class="formulario">
+
+                        <div class="btn-form">
+                            <span onclick="Entrar()">Entrar</span>
+                            <span onclick="Cadastro()">Cadastro</span>
+                            <hr id="indicador">
+                        </div>
+
+                        <form action="" id="entrarPainel" method="post">
+                            <input type="text" name="email" id="" placeholder="E-mail de acesso">
+                            <input type="password" name="senha" id="" placeholder="Digite sua senha">
+                            <button type="submit" name="senEntrar" class="btn">Entrar</button>
+                            <a href="">Esqueceu a senha?</a>
+                        </form>
+
+                        <form action="" id="siteCadastro" method="post">
+                            <input type="text" name="nome" id="" placeholder="Nome completo">
+                            <input type="text" name="email" id="" placeholder="E-mail de acesso">
+                            <input type="password" name="senha" id="" placeholder="Digite sua senha">
+                            <button type="submit" name="senCad" class="btn">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
         </div>
-
-        <div class="linha">
-
-
-            <div class="col-4">
-                <img src="../img/produto-1.jpg">
-                <h4>Teste Titulo</h4>
-                
-                <p>R$ 56,00</p>
-            </div>
-
-
-            <div class="col-4">
-                <img src="../img/produto-2.jpg">
-                <h4>Teste Titulo</h4>
-                
-                <p>R$ 56,00</p>
-            </div>
-            
-
-            <div class="col-4">
-                <img src="../img/produto-3.jpg">
-                <h4>Teste Titulo</h4>
-                
-                <p>R$ 56,00</p>
-            </div>
-
-
-            <div class="col-4">
-                <img src="../img/produto-4.jpg">
-                <h4>Teste Titulo</h4>
-                
-                <p>R$ 56,00</p>
-            </div>
-
-        </div>
-
-        <div class="paginacao">
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
-            <span>&#8594;</span>
-        </div>
-
     </div>
-    <!--PROVAVELMENTE NAO NECESSESARIA-->
 
 
 
@@ -152,6 +131,6 @@
 
     </footer>
 
-<script src="../js/app.js"></script>
+<script src="../js/login.js"></script>
 </body>
 </html>
