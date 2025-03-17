@@ -4,7 +4,8 @@ var entrarPainel = document.getElementById("siteLogin");
 var siteCadastro = document.getElementById("siteCadastro");
 var indicador = document.getElementById("indicador");
 
-
+entrarPainel.style.transition = "none";
+entrarPainel.style.transform = "translateX(-300px)";
 MenuItens.style.maxHeight = "0px";
 window.Entrar = Entrar;
 window.Cadastro = Cadastro;
@@ -28,6 +29,7 @@ function Cadastro() {
 
 
 function Entrar() {
+    entrarPainel.style.transition = "transform 1s";
     siteCadastro.style.transform = "translateX(300px)";
     indicador.style.transform = "translateX(0px)";
     entrarPainel.style.transform = "translateX(0px)";

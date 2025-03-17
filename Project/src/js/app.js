@@ -1,3 +1,5 @@
+
+
 var MenuItens = document.getElementById("MenuItens");
 var produtoImg = document.getElementById("produtoImg");
 var produtoSec = document.getElementById("produtoSec");
@@ -27,3 +29,4 @@ produtoSec[2].onclick = function(){
 produtoSec[3].onclick = function(){
     produtoImg.src = produtoSec[3].src;
 }
+
