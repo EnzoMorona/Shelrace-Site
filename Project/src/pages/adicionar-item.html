@@ -47,11 +47,28 @@
             <h2>Adicionar Produto</h2>
 
             <form class="form-add-item" id="formAddItem">
+
                 <input type="text" id="addNome" placeholder="Nome" required><br>
                 <input type="text" id="addDescricao" placeholder="Descrição"><br>
                 <input type="number" id="addPreco" placeholder="Preço" required><br>
                 <input type="number" id="addEstoque" placeholder="Estoque" required><br>
-                <input type="text" id="addImage" placeholder="URL da Imagem"><br>
+
+                <label><input type="checkbox" name="tamanhos" id="addTamanho" value="P"> P</label>
+                <label><input type="checkbox" name="tamanhos" id="addTamanho" value="M"> M</label>
+                <label><input type="checkbox" name="tamanhos" id="addTamanho" value="G"> G</label>
+                <label><input type="checkbox" name="tamanhos" id="addTamanho" value="GG"> GG</label>
+
+                <select name="" id="addCategoria">
+                    <option value="" disabled selected>Selecione a Categoria</option>
+                    <option value="">Capacete</option>
+                    <option value="">Macacao</option>
+                    <option value="">Luvas</option>
+                    <option value="">Botas</option>
+                </select>
+
+                <input type="file" id="addImage" accept="image/png, image/jpeg" multiple><br>
+                <p id="fileCount">0/5 imagens selecionadas</p>
+
                 <button type="submit">Adicionar Produto</button>
             </form>
         </div>
