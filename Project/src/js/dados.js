@@ -23,7 +23,7 @@ async function carregarDadosUsuario() {
 
         // Busca os dados adicionais do usuário no banco de dados
         const { data, error: userError } = await supabase
-            .from('user') // Nome da tabela no Supabase
+            .from('users') // Nome da tabela no Supabase
             .select('name, email, password')
             .eq('id', user.user.id)
             .single();
@@ -99,7 +99,7 @@ const { data: user, error: authError } = await supabase.auth.getUser();
 
     // Agora atualiza os dados na tabela personalizada
     const { data: updatedData, error: updateDbError } = await supabase
-        .from('user') // Nome correto da sua tabela
+        .from('users') // Nome correto da sua tabela
         .update({ name: nome, email: email })
         .eq('id', userId) // Filtra pelo próprio usuário logado
         .select();  // Retorna os dados atualizados para conferir

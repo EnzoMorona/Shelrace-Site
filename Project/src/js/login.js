@@ -1,5 +1,7 @@
 import { supabase } from './supabase.js';
 
+//VER, CASO O EMAIL FIQUE SEM SER CONFIRMADO POOR UM TEMPO, FAZER OQUE DEPOIS?
+
 var entrarPainel = document.getElementById("siteLogin");
 var siteCadastro = document.getElementById("siteCadastro");
 var indicador = document.getElementById("indicador");
@@ -95,6 +97,17 @@ form_login.addEventListener('submit', async (event) => {
 
     if (error) {
         alert('Erro ao fazer login: ' + error.message);
+
+        if(error.message === 'Email not confirmed'){
+
+            const { emailError } = await supabase.auth.signInWithOtp({ email: email });
+
+            if (emailError) {
+                alert('Erro:' + emailError.message);
+            } else {
+                alert( "E-mail de verificação reenviado com sucesso!");
+            }
+        }
     } else {
         alert('Login realizado com sucesso!');
         console.log('Token de acesso:', data.session.access_token);

@@ -26,3 +26,34 @@ async function carregarProdutos() {
 }
 
 carregarProdutos()
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    
+    const linkAdmin = document.getElementById("linkAdmin");
+
+    // Conectar ao Supabase
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        // Se não estiver logado, remove o link
+        linkAdmin.style.display = "none"; 
+        return;
+    }
+
+    // Buscar os dados do usuário na tabela do Supabase
+    const { data, error } = await supabase
+        .from("users") // Nome da sua tabela de usuários
+        .select("name, role")
+        .eq("id", user.id)
+        .single();
+        console.log(data.role)
+
+    if (error || !data || data.role !== "admin") {
+        // Se não for adm, esconde o link
+        linkAdmin.style.display = "none";
+        linkAdmin.href = "#";
+        console.error("Erro ao buscar informações do usuário:" + error.message);
+        
+    }
+});

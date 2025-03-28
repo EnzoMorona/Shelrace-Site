@@ -1,5 +1,25 @@
 import { supabase } from './supabase.js';
 
+//Se nao estiver logado ou nao tem admin, nao permitido de entrar na pagina
+document.addEventListener("DOMContentLoaded", async function () {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {//se nao estiver logado sera redirecionado
+        window.location.href = "minha-conta.html"; 
+        return;
+    }
+
+    const { data, error } = await supabase
+        .from("users")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+    if (error || !data || data.role !== "admin") {//se nao tiver admin sera redirecionado
+        window.location.href = "home.html"; 
+    }
+});
+
 
 document.getElementById("formAddItem").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -11,6 +31,8 @@ document.getElementById("formAddItem").addEventListener("submit", async (e) => {
     const tamanho = document.getElementById("addTamanho").value;
     const categoria = document.getElementById("addCategoria").value;
     const imagens = document.getElementById("addImage").files;//text array no supabase para permitir a inclusao da lista [] de URL
+
+    console.log(categoria)
 
     //caso o numero de imagens seja igual a zero
     if (imagens.length === 0) {

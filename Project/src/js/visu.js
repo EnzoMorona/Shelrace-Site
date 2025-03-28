@@ -8,6 +8,7 @@ const productId = urlParams.get("id");
 
 
 async function carregarProdutoVisu() {
+
     if (!productId) {
         document.getElementById("produtoDetalhes").innerHTML = "<p>Produto não encontrado.</p>";
         return;
@@ -25,6 +26,8 @@ async function carregarProdutoVisu() {
         console.error("Erro:", error);
         return;
     }
+
+
 
     let sizeHtml = "";
 
@@ -48,38 +51,66 @@ async function carregarProdutoVisu() {
 
         imageHtml = `<img src="${data.image_url[0]}" alt="" id="produtoImg">
                      <div class="img-linha">${otherHtml}</div>`;
-
     }else {
         // Caso seja uma string única, exibe apenas uma imagem
         imageHtml = `<img src="${data.image_url}" alt="" width="100%" id="produtoImg">`;
     }
 
-
+    //add a visualicao do produto
     document.getElementById('visuProduto').innerHTML = `
         <p>Produto da Loja Teste</p>
                 <h1>${data.name}</h1>
                 <h4>R$${data.price},00</h4>
                 <form action="" method="post">
-
-                    <select name="" id="">
+                    <select name="" id="selectTamanho">
                         <option value="">Selecione o Tamanho</option>
                         ${sizeHtml}
                     </select>
-
-                    <input type="number" name="" id="" value="1" max="${data.stock}">
-                   
-                    
-                    <button type="submit" class="btn">Adicionar no Carrinho</button>
-
+                    <input type="number" name="" id="quantity" value="1" max="${data.stock}">
+                    <button type="submit" class="btn" id="submitButton">Adicionar no Carrinho</button>
                 </form>
 
             <h3>Descricao</h3>
             <p>${data.description}</p>
     `;
 
+    async function adicionarAoCarrinho() {
+    
+        const user = await supabase.auth.getUser();
+        if (!user.data?.user) {
+            alert("Você precisa estar logado para adicionar ao carrinho.");
+            return;
+        }
+    
+        const tamanho = document.getElementById("selectTamanho").value;
+        const quantity = document.getElementById("quantity").value;
+
+        console.log(tamanho)
+        console.log(quantity)
+        console.log(user.data.user.id)
+    
+        if (!tamanho) {
+            alert("Por favor, selecione um tamanho.");
+            return;
+        }
+    
+        const { data, error } = await supabase
+            .from("carrinho")
+            .insert([{ 
+                user_id: user.data.user.id, 
+                product_id: productId, 
+                quantity: quantity,
+                size: tamanho
+            }]);
+    
+        if (error) {
+            console.error("Erro ao adicionar ao carrinho:", error.message);
+        } else {
+            alert("Produto adicionado ao carrinho!");
+        }
+    }
 
     document.getElementById('visuImagens').innerHTML = imageHtml
-
 
     // Adiciona evento para trocar a imagem ao clicar nas miniaturas
     document.querySelectorAll(".produtoSec").forEach(img => {
@@ -94,8 +125,16 @@ async function carregarProdutoVisu() {
             this.src = firstProd;
         });
     });
+
+    document.getElementById("submitButton").addEventListener("click", async function(event) {
+        event.preventDefault();
+        await adicionarAoCarrinho();
+    });
 }
 carregarProdutoVisu();
+
+
+
 
 
 
