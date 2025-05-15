@@ -12,30 +12,32 @@
 
         <div class="container">
 
-            <div class="navbar">
+                <div class="navbar">
 
 
-                <div class="logo">
-                    <img src="../../public/logoEscura.png" alt="MSFLIX" width="125px">
+                    <div class="logo">
+                        <img src="../../public/logoEscura.png" alt="Shelcomp" width="125px">
+                    </div>
+
+
+                    <nav>
+                        <ul id="MenuItens">
+                            <li>                                       <a href="home.html" title="">Inicio</a>                 </li>
+                            <li>                                       <a href="produtos.html" title="">Produtos</a>           </li>
+                            <li class="hidden" id="add-button">        <a href="adicionar-item.html" title="">Adicionar</a>    </li>
+                            <li class="hidden" id="usuario-button">    <a href="usuario.html" title="">Usuario</a>             </li>
+                            <li class="hidden" id="login-button">      <a href="minha-conta.html" title="">Login/Cadastro</a>  </li>
+                            <li class="hidden" id="logout-button">     <a title="" onclick="logout()">Logout</a>               </li>
+                        </ul>
+                    </nav>
+
+                    <a href="carrinho.html">
+                    <img src="../../public/carrinho2.png" width="30px" height="30px">
+                    </a>
+
+                    <img src="../../public/menu.png" class="menu-celular" onclick="menucelular()">
+
                 </div>
-
-
-                <nav>
-                    <ul id="MenuItens">
-                        <li><a href="home.html" title="">Inicio</a></li>
-                        <li><a href="produtos.html" title="">Produtos</a></li>
-                        <li id="login-button"><a href="minha-conta.html" title="">Login/Cadastro</a></li>
-                        <li id="logout-button"><a title="" onclick="logout()">Logout</a></li>
-                    </ul>
-                </nav>
-
-                <a href="carrinho.html">
-                <img src="../../public/carrinho2.png" width="30px" height="30px">
-                </a>
-
-                <img src="../../public/menu.png" class="menu-celular" onclick="menucelular()">
-
-            </div>
 
         </div>
 
@@ -53,11 +55,6 @@
                 <input type="number" id="addPreco" placeholder="Preço" required><br>
                 <input type="number" id="addEstoque" placeholder="Estoque" required><br>
 
-                <label><input type="checkbox" name="tamanhos" id="addTamanho" value="P"> P</label>
-                <label><input type="checkbox" name="tamanhos" id="addTamanho" value="M"> M</label>
-                <label><input type="checkbox" name="tamanhos" id="addTamanho" value="G"> G</label>
-                <label><input type="checkbox" name="tamanhos" id="addTamanho" value="GG"> GG</label>
-
                 <select name="" id="addCategoria">
                     <option value="" disabled selected>Selecione a Categoria</option>
                     <option value="Capacete">Capacete</option>
@@ -66,8 +63,13 @@
                     <option value="Botas">Botas</option>
                 </select>
 
+                <div id="tamanhosCheckbox"></div>
+
+
                 <input type="file" id="addImage" accept="image/png, image/jpeg" multiple><br>
                 <p id="fileCount">0/5 imagens selecionadas</p>
+
+                <label><input type="checkbox" name="destaque" id="addDestaque" value="1">Destaque</label> 
 
                 <button type="submit">Adicionar Produto</button>
             </form>

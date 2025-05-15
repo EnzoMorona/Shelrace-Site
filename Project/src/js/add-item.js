@@ -24,27 +24,45 @@ document.addEventListener("DOMContentLoaded", async function () {
 document.getElementById("formAddItem").addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const checkboxes = document.querySelectorAll('#tamanhosCheckbox input[type="checkbox"]');
+    const resultado = [];
+    let sucessoInsert = true;
+    let estoqueSoma = 0;
+    let estoques = [];
+
+    for (const checkbox of checkboxes) {
+        if (checkbox.checked) {
+            const tamanho = checkbox.value;
+            const inputQtd = checkbox.parentElement.querySelector('input[type="number"]');
+            const qtd = inputQtd.value.trim();//trim serve para tirar os espacamentos
+
+            if (qtd !== '') {
+                resultado.push(`${tamanho}: ${qtd}`);
+                estoqueSoma += Number(qtd);
+            }
+        }
+    };
+
     const nome = document.getElementById("addNome").value;
     const descricao = document.getElementById("addDescricao").value;
     const preco = parseFloat(document.getElementById("addPreco").value);
     const estoque = parseInt(document.getElementById("addEstoque").value);
-    const tamanho = document.getElementById("addTamanho").value;
+    const tamanho = resultado;
     const categoria = document.getElementById("addCategoria").value;
     const imagens = document.getElementById("addImage").files;//text array no supabase para permitir a inclusao da lista [] de URL
+    const checkbox = document.getElementById("addDestaque");
+    const destaque = checkbox.checked ? 1 : 0;
 
-    console.log(categoria)
+    if (estoqueSoma != estoque){
+        console.log("numero roupas nao bate com estoque total", estoqueSoma, estoque, resultado)
+        return;
+    }    
 
     //caso o numero de imagens seja igual a zero
     if (imagens.length === 0) {
         alert("Selecione pelo menos uma imagem!");
         return;
     }
-
-    function tamanhoSelecionados() {
-        const selectedOptions = document.querySelectorAll('input[name="tamanhos"]:checked');
-        return Array.from(selectedOptions).map(option => option.value);
-    }
-    const tamanhos = tamanhoSelecionados();
 
     //Lista qual sera armazenada os multiplos links de imagens
     let urlsImagens = [];
@@ -75,14 +93,47 @@ document.getElementById("formAddItem").addEventListener("submit", async (e) => {
         urlsImagens.push(publicUrl.publicUrl);
     }
 
-
     const { data, error } = await supabase.from("products").insert([
-        { name: nome, description: descricao, price: preco, stock: estoque, size: tamanhos, category: categoria, image_url: urlsImagens },
-    ]);
+        { name: nome, description: descricao, price: preco, stock: estoque, size: tamanho, category: categoria, image_url: urlsImagens, featured: destaque },
+    ]).select();
+    const productId = data[0].id;
+
+    for (const checkbox of checkboxes) {
+        if (checkbox.checked) {
+            const tamanho = checkbox.value;
+            const inputQtd = checkbox.parentElement.querySelector('input[type="number"]');
+            const qtd = inputQtd.value.trim();//trim serve para tirar os espacamentos
+
+            if (qtd !== '') {
+                estoques.push({
+                    product_id: productId,
+                    size: tamanho,
+                    quantity: Number(qtd)
+                });
+            }
+        }
+    };
 
     if (error) {
         console.error("Erro ao adicionar produto:", error.message);
-    } else {
+        sucessoInsert = false;
+    }
+
+    if (estoques.length > 0) {
+        const { error: stockError } = await supabase.from("product_stock").insert(estoques);
+
+        if (stockError) {
+            console.error("Erro ao adicionar estoque do produto:", stockError.message);
+            sucessoInsert = false;
+        }
+    }
+
+    
+
+    if (!sucessoInsert) {
+    await supabase.from("products").delete().eq("id", productId);
+    console.log("Produto removido devido à falha no estoque.");
+    }else {
         console.log("Produto adicionado:", data);
         carregarProdutos();
     }
@@ -162,3 +213,42 @@ document.getElementById("addImage").addEventListener("change", function () {
 //DESCRICAO
 //IMAGEM
 //CATEGORIA
+
+//CHECKBOX E SELECT MUDANCAS
+const categoriasTamanhos = {
+  Capacete: ['56', '58', '60', '62'],
+  Macacao: ['P', 'M', 'G', 'GG'],
+  Luvas: ['PP', 'P', 'M', 'G'],
+  Botas: ['38', '39', '40', '41', '42']
+};
+
+const addCategoria = document.getElementById('addCategoria');
+const tamanhosCheckbox = document.getElementById('tamanhosCheckbox');
+
+addCategoria.addEventListener('change', function () {
+  const categoriaSelecionada = this.value;
+  const tamanhos = categoriasTamanhos[categoriaSelecionada] || [];
+
+  // Limpa o container
+  tamanhosCheckbox.innerHTML = '';
+
+  tamanhos.forEach(tamanho => {
+    const checkboxId = `tamanho-${tamanho}`;
+
+    const label = document.createElement('label');
+    label.innerHTML = `
+      <input type="checkbox" name="tamanhos" value="${tamanho}" id="${checkboxId}">
+      ${tamanho}
+      <input type="number" name="quantidade-${tamanho}" placeholder="Qtd" min="0" style="display:none; margin-left: 8px; width: 60px;">
+    `;
+
+    // Adiciona comportamento ao checkbox
+    label.querySelector(`#${checkboxId}`).addEventListener('change', function () {
+      const inputQtd = label.querySelector(`input[type="number"]`);
+      inputQtd.style.display = this.checked ? 'inline-block' : 'none';
+    });
+
+    tamanhosCheckbox.appendChild(label);
+    tamanhosCheckbox.appendChild(document.createElement('br'));
+  });
+});

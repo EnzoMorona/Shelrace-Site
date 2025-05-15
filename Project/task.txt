@@ -1,0 +1,25 @@
+Botao de Usuario = Feito
+Produtos relacionados na aba de visualizacao = Feito
+Organizar Home por itens de categoria = Feito
+Sistema de filtro em produtos = Feito
+avisar que nao existe produtos relacionados quando n se existe = Feito
+Adicionar todos os botoes as paginas = Feito
+Filtrar por produtos Novos = Feito
+Quando nao permitido na pagina por nao estar logado, mostrar pagina para levar ao registro = Feito
+
+Calculo de Frete
+Pagamento por API mercado pago
+Editar produtos adicionados
+Adicionar mais campos de preenchimento pro usuario (CEP/CPF)
+CSS do menu
+CSS do produtos
+CSS do login/cadastro
+CSS do carrinho
+CSS do Usuario
+CSS da visualizaco
+CSS do Adicionar produtos
+CSS do Sem Permissao
+Filtrar por produtos em destaque (Usar True/False na coluna de se esta em destaque)
+Historico de compra pro admin
+Fazer descontos em itens
+Verificar quantidade de itens no carrinho bate com o total / Ao invez disso, dizer que esse item ja tem no carrinho, e voce pode alterar a quantidade la. usar uma lista para colocar a quantidade escolhida e o total na primeira vez que colocou no carrinho

@@ -13,7 +13,6 @@ async function carregarProdutoVisu() {
         document.getElementById("produtoDetalhes").innerHTML = "<p>Produto não encontrado.</p>";
         return;
     }
-
     //Pegando o produto com o ID correspondente ao que estava na URL
     const { data, error } = await supabase
         .from("products")
@@ -26,6 +25,8 @@ async function carregarProdutoVisu() {
         console.error("Erro:", error);
         return;
     }
+
+
 
 
 
@@ -81,20 +82,33 @@ async function carregarProdutoVisu() {
             alert("Você precisa estar logado para adicionar ao carrinho.");
             return;
         }
-    
+
         const tamanho = document.getElementById("selectTamanho").value;
         const quantity = document.getElementById("quantity").value;
+
+        if (!tamanho) {
+            alert("Por favor, selecione um tamanho.");
+            return;
+        }
+
+        const { data: cart, error } = await supabase.from("carrinho").select("*").eq("product_id", productId).eq("user_id", user.data.user.id).eq("size", tamanho);
+        console.log(cart.length)
+
+        if (error) {
+            console.error("Erro ao consultar carrinho:", error.message);
+            return;
+        }
+
+        if (cart.length > 0) {
+            console.log("Ja existe um item desses em seu carrinho, altere a quantidade dele por la")
+            return;
+        }
 
         console.log(tamanho)
         console.log(quantity)
         console.log(user.data.user.id)
     
-        if (!tamanho) {
-            alert("Por favor, selecione um tamanho.");
-            return;
-        }
-    
-        const { data, error } = await supabase
+        const { error: insertError } = await supabase
             .from("carrinho")
             .insert([{ 
                 user_id: user.data.user.id, 
@@ -103,12 +117,38 @@ async function carregarProdutoVisu() {
                 size: tamanho
             }]);
     
-        if (error) {
+        if (insertError) {
             console.error("Erro ao adicionar ao carrinho:", error.message);
         } else {
             alert("Produto adicionado ao carrinho!");
         }
     }
+
+    const itensRelacionados = document.getElementById("itensRelacionados")
+
+    const { data: same, error: sameError } = await supabase
+    .from("products")
+    .select("*")
+    .eq("category", data.category)
+    .neq("id", data.id)
+    .order("id", { ascending: false })
+    .limit(4);
+
+    same.forEach((produto) => {
+        const produtoHTML = `
+            <div class="col-4">
+                <a href="visu.html?id=${produto.id}">
+                <img src="${produto.image_url[0]}">
+                </a>
+                <h4>${produto.name}</h4>
+                
+                <p>R$ ${produto.price},00</p>
+            </div>
+        `;
+
+        itensRelacionados.innerHTML += produtoHTML;
+    });
+
 
     document.getElementById('visuImagens').innerHTML = imageHtml
 

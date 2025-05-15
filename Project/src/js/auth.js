@@ -8,7 +8,7 @@ async function checkSession() {
     if (error || !session) {
         // Redirecionar para a página de login caso não esteja logado
         console.error('Sessão expirada ou inexistente:', error?.message);
-        window.location.href = 'home.html';
+        window.location.href = 'sem-permissao.html';
         return;
     }
 

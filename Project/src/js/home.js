@@ -1,18 +1,36 @@
 import { supabase } from './supabase.js';
 
 async function carregarProdutos() {
-    const { data, error } = await supabase.from("products").select("*");
+    const { data, error } = await supabase.from("products").select("*").order("created_at", { ascending: false });
 
     if (error) {
         console.error("Erro ao buscar produtos:", error.message);
         return;
     }
 
-    const lista = document.getElementById("mostrarItens");
-    lista.innerHTML = "";
+    const destaque = document.getElementById("mostrarItensDestaque");
+    const novos = document.getElementById("mostrarItensNovos");
+    const categorias = {
+        "Macacao": { 
+            container: document.getElementById("containerMacacao"),
+            lista: document.getElementById("mostrarItensMacacao")
+        },
+        "Capacete":{
+            container: document.getElementById("containerCapacete"),
+            lista: document.getElementById("mostrarItensCapacete")
+        },
+        "Luvas":{
+            container: document.getElementById("containerLuvas"),
+            lista: document.getElementById("mostrarItensLuvas")
+        },
+        "Botas":{ 
+            container: document.getElementById("containerBotas"),
+            lista: document.getElementById("mostrarItensBotas")
+        },
+    };
 
-    data.forEach((produto) => {
-        lista.innerHTML += `
+    data.forEach((produto, index) => {
+        const produtoHTML = `
             <div class="col-4">
                 <a href="visu.html?id=${produto.id}">
                 <img src="${produto.image_url[0]}">
@@ -22,38 +40,21 @@ async function carregarProdutos() {
                 <p>R$ ${produto.price},00</p>
             </div>
         `;
+
+        const container = categorias[produto.category];
+        if (container) {
+            container.lista.innerHTML += produtoHTML;
+            container.container.style.display = "block";
+        }
+
+        if (produto.featured == 1){
+            destaque.innerHTML += produtoHTML;
+        }
+        
+        if (index < 4) {
+        novos.innerHTML += produtoHTML;
+        }
     });
 }
 
 carregarProdutos()
-
-
-document.addEventListener("DOMContentLoaded", async function () {
-    
-    const linkAdmin = document.getElementById("linkAdmin");
-
-    // Conectar ao Supabase
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-        // Se não estiver logado, remove o link
-        linkAdmin.style.display = "none"; 
-        return;
-    }
-
-    // Buscar os dados do usuário na tabela do Supabase
-    const { data, error } = await supabase
-        .from("users") // Nome da sua tabela de usuários
-        .select("name, role")
-        .eq("id", user.id)
-        .single();
-        console.log(data.role)
-
-    if (error || !data || data.role !== "admin") {
-        // Se não for adm, esconde o link
-        linkAdmin.style.display = "none";
-        linkAdmin.href = "#";
-        console.error("Erro ao buscar informações do usuário:" + error.message);
-        
-    }
-});

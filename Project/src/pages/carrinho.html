@@ -12,30 +12,32 @@
 
         <div class="container">
 
-            <div class="navbar">
+                <div class="navbar">
 
 
-                <div class="logo">
-                    <img src="../../public/logoEscura.png" alt="MSFLIX" width="125px">
+                    <div class="logo">
+                        <img src="../../public/logoEscura.png" alt="Shelcomp" width="125px">
+                    </div>
+
+
+                    <nav>
+                        <ul id="MenuItens">
+                            <li>                                       <a href="home.html" title="">Inicio</a>                 </li>
+                            <li>                                       <a href="produtos.html" title="">Produtos</a>           </li>
+                            <li class="hidden" id="add-button">        <a href="adicionar-item.html" title="">Adicionar</a>    </li>
+                            <li class="hidden" id="usuario-button">    <a href="usuario.html" title="">Usuario</a>             </li>
+                            <li class="hidden" id="login-button">      <a href="minha-conta.html" title="">Login/Cadastro</a>  </li>
+                            <li class="hidden" id="logout-button">     <a title="" onclick="logout()">Logout</a>               </li>
+                        </ul>
+                    </nav>
+
+                    <a href="carrinho.html">
+                    <img src="../../public/carrinho2.png" width="30px" height="30px">
+                    </a>
+
+                    <img src="../../public/menu.png" class="menu-celular" onclick="menucelular()">
+
                 </div>
-
-
-                <nav>
-                    <ul id="MenuItens">
-                        <li><a href="home.html" title="">Inicio</a></li>
-                        <li><a href="produtos.html" title="">Produtos</a></li>
-                        <li id="login-button"><a href="minha-conta.html" title="">Login/Cadastro</a></li>
-                        <li id="logout-button"><a title="" onclick="logout()">Logout</a></li>
-                    </ul>
-                </nav>
-
-                <a href="carrinho.html">
-                <img src="../../public/carrinho2.png" width="30px" height="30px">
-                </a>
-
-                <img src="../../public/menu.png" class="menu-celular" onclick="menucelular()">
-
-            </div>
 
         </div>
 
@@ -44,91 +46,12 @@
     <div class="corpo-categorias carrinho-compras">
 
         <table id="listaCarrinho">
-            <tr>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Valor</th>
-            </tr>
-            <tr>
-                <td>
-                    <div class="info-carrinho">
-                        <img src="../../public/produto-3.jpg">
 
-                        <div>
-                            <p>Teste Server</p>
-                            <small>Valor: R$ 890</small>
-                            <br>
-                            <a href="">Remover</a>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <form action="" method="post">
-                        <input type="number" name="" id="" value="1">
-                    </form>
-                </td>
-                <td>R$ 888</td>
-            </tr>
- 
-            <tr>
-                <td>
-                    <div class="info-carrinho">
-                        <img src="../../public/produto-2.jpg">
-
-                        <div>
-                            <p>Teste Server</p>
-                            <small>Valor: R$ 453</small>
-                            <br>
-                            <a href="">Remover</a>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <form action="" method="post">
-                        <input type="number" name="" id="" value="1">
-                    </form>
-                </td>
-                <td>R$ 453</td>
-            </tr>
-
-            <tr>
-                <td>
-                    <div class="info-carrinho">
-                        <img src="../../public/produto-1.jpg">
-
-                        <div>
-                            <p>Teste Server</p>
-                            <small>Valor: R$ 124</small>
-                            <br>
-                            <a href="">Remover</a>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <form action="" method="post">
-                        <input type="number" name="" id="" value="1">
-                    </form>
-                </td>
-                <td>R$ 124</td>
-            </tr>
         </table>
 
         <div class="valor-total">
-            <table>
-                <tr>
-                    <td>Sub-Total</td>
-                    <td>R$ ???</td>
-                </tr>
+            <table id="precoCarrinho">
 
-                <tr>
-                    <td>Frete</td>
-                    <td>R$ ???</td>
-                </tr>
-
-                <tr>
-                    <td>Total</td>
-                    <td>R$ ???</td>
-                </tr>
             </table>
         </div>
 

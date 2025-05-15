@@ -23,6 +23,10 @@ body{
     
 }
 
+.hidden {
+    display: none;
+}
+
 .banner{
     background: radial-gradient(var(--cor-padrao-hover), var(--cor-padrao));
 }
